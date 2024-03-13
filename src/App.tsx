@@ -1,5 +1,5 @@
-import { Tldraw, track, useEditor } from '@tldraw/tldraw'
-import '@tldraw/tldraw/tldraw.css'
+import { Tldraw, track, useEditor } from 'tldraw'
+import 'tldraw/tldraw.css'
 import { useSyncStore } from './useSyncStore'
 
 const HOST_URL = import.meta.env.DEV
@@ -14,7 +14,13 @@ export default function SyncExample() {
 
 	return (
 		<div className="tldraw__editor">
-			<Tldraw autoFocus store={store} shareZone={<NameEditor />} />
+			<Tldraw
+				autoFocus
+				store={store}
+				components={{
+					SharePanel: NameEditor,
+				}}
+			/>
 		</div>
 	)
 }
@@ -22,7 +28,7 @@ export default function SyncExample() {
 const NameEditor = track(() => {
 	const editor = useEditor()
 
-	const { color, name } = editor.user
+	const { color, name } = editor.user.getUserPreferences()
 
 	return (
 		<div style={{ pointerEvents: 'all', display: 'flex' }}>

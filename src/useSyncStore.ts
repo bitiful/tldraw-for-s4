@@ -7,7 +7,7 @@ import {
 	defaultShapeUtils,
 	throttle,
 	uniqueId,
-} from '@tldraw/tldraw'
+} from 'tldraw'
 import { useEffect, useState } from 'react'
 import PartySocket from 'partysocket'
 
@@ -125,7 +125,7 @@ export function useSyncStore({
 					clientId,
 					type: 'update',
 					updates: pendingChanges,
-				})
+				}),
 			)
 			pendingChanges.length = 0
 		}, 32)
@@ -143,7 +143,7 @@ export function useSyncStore({
 			store.listen(handleChange, {
 				source: 'user',
 				scope: 'document',
-			})
+			}),
 		)
 
 		// unsubs.push(

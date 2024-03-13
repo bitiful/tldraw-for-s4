@@ -1,5 +1,4 @@
-import { HistoryEntry, TLRecord } from '@tldraw/tldraw'
-import { schema } from './server-schema'
+import { HistoryEntry, TLRecord, createTLSchema } from 'tldraw'
 import type * as Party from 'partykit/server'
 
 export default class SyncParty implements Party.Server {
@@ -8,19 +7,21 @@ export default class SyncParty implements Party.Server {
 	constructor(public party: Party.Party) {}
 
 	async onConnect(connection: Party.Connection<unknown>) {
+		const schema = createTLSchema().serialize()
 		connection.send(
 			JSON.stringify({
 				type: 'init',
 				snapshot: { store: this.records, schema },
-			})
+			}),
 		)
 	}
 
 	onMessage(
 		message: string,
-		sender: Party.Connection<unknown>
+		sender: Party.Connection<unknown>,
 	): void | Promise<void> {
 		const msg = JSON.parse(message as string)
+		const schema = createTLSchema().serialize()
 		switch (msg.type) {
 			case 'update': {
 				try {
@@ -48,18 +49,19 @@ export default class SyncParty implements Party.Server {
 						JSON.stringify({
 							type: 'recovery',
 							snapshot: { store: this.records, schema },
-						})
+						}),
 					)
 				}
 				break
 			}
 			case 'recovery': {
+				const schema = createTLSchema().serialize()
 				// If the client asks for a recovery, send them a snapshot of the current state
 				sender.send(
 					JSON.stringify({
 						type: 'recovery',
 						snapshot: { store: this.records, schema },
-					})
+					}),
 				)
 				break
 			}
