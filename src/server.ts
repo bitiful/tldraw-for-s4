@@ -1,17 +1,48 @@
-import { HistoryEntry, TLRecord, createTLSchema } from 'tldraw'
 import type * as Party from 'partykit/server'
+import {
+	HistoryEntry,
+	TLRecord,
+	TLStoreSnapshot,
+	createTLSchema,
+	throttle,
+} from 'tldraw'
 
 export default class SyncParty implements Party.Server {
 	records: Record<string, TLRecord> = {}
 
-	constructor(public party: Party.Party) {}
+	readonly initResult: Promise<void>
+	constructor(public party: Party.Party) {
+		this.initResult = (async () => {
+			const snapshot = (await this.party.storage.get(
+				'snapshot',
+			)) as TLStoreSnapshot
+			if (!snapshot) return
+
+			const migrationResult = this.schema.migrateStoreSnapshot(snapshot)
+			if (migrationResult.type === 'error') {
+				throw new Error(migrationResult.reason)
+			}
+
+			this.records = migrationResult.value
+		})()
+	}
+
+	readonly schema = createTLSchema()
+
+	persist = throttle(async () => {
+		this.party.storage.put('snapshot', {
+			store: this.records,
+			schema: this.schema.serialize(),
+		})
+	}, 1000)
 
 	async onConnect(connection: Party.Connection<unknown>) {
-		const schema = createTLSchema().serialize()
+		// need to make sure we've loaded the snapshot before we can let clients connect
+		await this.initResult
 		connection.send(
 			JSON.stringify({
 				type: 'init',
-				snapshot: { store: this.records, schema },
+				snapshot: { store: this.records, schema: this.schema.serialize() },
 			}),
 		)
 	}
@@ -42,6 +73,8 @@ export default class SyncParty implements Party.Server {
 					}
 					// If it works, broadcast the update to all other clients
 					this.party.broadcast(message, [sender.id])
+					// and update the storage layer
+					this.persist()
 				} catch (err) {
 					// If we have a problem merging the update, we need to send a snapshot
 					// of the current state to the client so they can get back in sync.
