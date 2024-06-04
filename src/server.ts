@@ -7,11 +7,45 @@ import {
 	throttle,
 } from 'tldraw'
 
+const roomUsers: Map<string, string[]> = new Map()
+const maxUsersPerRoom = 2
+
+function AddUserToRoom(userId: string, roomId: string): boolean {
+	const users = roomUsers.get(roomId) || []
+	if (users.includes(userId)) {
+		return true
+	}
+	if (users.length >= maxUsersPerRoom) {
+		return false
+	}
+	roomUsers.set(roomId, [...users, userId])
+	return true
+}
+
+function DelUserFromRoom(userId: string, roomId: string) {
+	const room = roomUsers.get(roomId)
+	if (room) {
+		const users = roomUsers.get(roomId) || []
+		const newUsers = []
+		for (let i = 0; i < users.length; i++) {
+			if (users[i] !== userId) {
+				newUsers.push(users[i])
+			}
+		}
+		if (newUsers.length === 0) {
+			roomUsers.delete(roomId)
+			return
+		}
+		roomUsers.set(roomId, newUsers)
+	}
+}
+
 export default class SyncParty implements Party.Server {
 	records: Record<string, TLRecord> = {}
 
 	readonly initResult: Promise<void>
-	constructor(public party: Party.Party) {
+
+	constructor(readonly party: Party.Room) {
 		this.initResult = (async () => {
 			const snapshot = (await this.party.storage.get(
 				'snapshot',
@@ -37,6 +71,15 @@ export default class SyncParty implements Party.Server {
 	}, 1000)
 
 	async onConnect(connection: Party.Connection<unknown>) {
+		console.log('onConnect', connection)
+		const match = connection.uri.match(/\/(\w+)\?/)
+		const roomId = match ? match[1] : ''
+		const userId = connection.id
+		const ok = AddUserToRoom(userId, roomId)
+		if (!ok) {
+			connection.close(403, `Room ${roomId} is full, max users: ${maxUsersPerRoom}`)
+			return
+		}
 		// need to make sure we've loaded the snapshot before we can let clients connect
 		await this.initResult
 		connection.send(
@@ -47,10 +90,11 @@ export default class SyncParty implements Party.Server {
 		)
 	}
 
-	onMessage(
+	async onMessage(
 		message: string,
 		sender: Party.Connection<unknown>,
-	): void | Promise<void> {
+	) {
+		// console.log('onMessage', message)
 		const msg = JSON.parse(message as string)
 		const schema = createTLSchema().serialize()
 		switch (msg.type) {
@@ -98,6 +142,24 @@ export default class SyncParty implements Party.Server {
 				)
 				break
 			}
+			case 'presence': {
+				// If the client sends a presence update, broadcast it to all other clients
+				this.party.broadcast(message, [sender.id])
+				break
+			}
 		}
+	}
+
+	async onClose(connection: Party.Connection<unknown>) {
+		console.log('onClose', connection.uri)
+		// 移除用户
+		const match = connection.uri.match(/\/(\w+)\?/)
+		const roomId = match ? match[1] : ''
+		const userId = connection.id
+		DelUserFromRoom(userId, roomId)
+	}
+
+	async onError(connection: Party.Connection, error: Error) {
+		console.log('onError', error, 'connection', connection)
 	}
 }

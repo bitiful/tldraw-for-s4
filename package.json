@@ -1,35 +1,37 @@
 {
-	"name": "tldraw-sockets-example",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"packageManager": "npm@9.5.1",
-	"scripts": {
-		"dev": "concurrently \"vite\" \"HOST=localhost PORT=1234 npx partykit dev\" --kill-others",
-		"dev:win": "concurrently \"vite\" \"set HOST=localhost&& set PORT=1234 && npx partykit dev\" --kill-others",
-		"build": "tsc && vite build",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"deploy": "npm run build && npx partykit deploy"
-	},
-	"dependencies": {
-		"partykit": "^0.0.27",
-		"partysocket": "^0.0.17",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"tldraw": "^2.0.1"
-	},
-	"devDependencies": {
-		"@types/react": "^18.2.15",
-		"@types/react-dom": "^18.2.7",
-		"@typescript-eslint/eslint-plugin": "^6.0.0",
-		"@typescript-eslint/parser": "^6.0.0",
-		"@vitejs/plugin-react": "^4.0.3",
-		"concurrently": "^8.2.0",
-		"eslint": "^8.45.0",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-react-refresh": "^0.4.3",
-		"typescript": "^5.0.2",
-		"vite": "^4.4.5"
-	}
+  "name": "tldraw-sockets-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "npm@9.5.1",
+  "scripts": {
+    "dev": "concurrently \"vite --host=0.0.0.0\" \"HOST=0.0.0.0 PORT=1234 npx partykit dev\" --kill-others",
+    "dev:win": "concurrently \"vite\" \"set HOST=localhost&& set PORT=1234 && npx partykit dev\" --kill-others",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "deploy": "npm run build && npx partykit deploy"
+  },
+  "dependencies": {
+    "partykit": "^0.0.105",
+    "partysocket": "^1.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1",
+    "react-toastify": "^10.0.5",
+    "tldraw": "^2.1.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
 }
