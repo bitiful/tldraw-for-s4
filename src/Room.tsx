@@ -68,8 +68,8 @@ export default function Room() {
 				let presignedPutUrl: string
 
 				try {
-					const uploadUrl = `${API_URL}/presigned-url?key=${objectKey}&content-length=${file.size}`
-					const response = await fetch(uploadUrl)
+					const requestUrl = `${API_URL}/presigned-url?key=${objectKey}&content-length=${file.size}&no-wait=5`
+					const response = await fetch(requestUrl)
 					if (!response.ok) {
 						return Promise.reject({} as TLAsset)
 					}
