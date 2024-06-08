@@ -21,8 +21,8 @@ export default function Room() {
 		const shapeIds = editor.getCurrentPageShapes()
 		if (shapeIds.length === 0) {
 			const assetId: TLAssetId = AssetRecordType.createId('bitiful-desc-image')
-			const imageWidth = 600
-			const imageHeight = 600
+			const imageWidth = 586 // 1173
+			const imageHeight = 572 // 1145
 			editor.createAssets([{
 				id: assetId,
 				type: 'image',
