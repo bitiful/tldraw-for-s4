@@ -1,3 +1,5 @@
+![bitiful-tldraw-screenshop-colorful](https://github.com/bitiful/tldraw-for-s4/assets/168170389/c0a31189-bae0-40ca-8683-9a65950d7276)
+
 ## 介绍
 
 本项目基于 [tldraw-sockets-example](https://github.com/tldraw/tldraw-sockets-example) 二次开发而来。
