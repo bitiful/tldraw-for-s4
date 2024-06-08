@@ -1,5 +1,7 @@
 ![bitiful-tldraw-screenshop-colorful](https://github.com/bitiful/tldraw-for-s4/assets/168170389/c0a31189-bae0-40ca-8683-9a65950d7276)
 
+**操作演示：**
+
 https://github.com/bitiful/tldraw-for-s4/assets/168170389/1aac31fb-4a67-4c40-9a8c-e4026bc9ba6b
 
 ## 介绍
