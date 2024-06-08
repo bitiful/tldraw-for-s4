@@ -1,4 +1,4 @@
-![bitiful-tldraw-screenshop-colorful](https://github.com/bitiful/tldraw-for-s4/assets/168170389/c0a31189-bae0-40ca-8683-9a65950d7276)
+![bitiful-tldraw-screenshop-colorful](https://github.com/bitiful/tldraw-for-s4/assets/168170389/a3b9246a-a110-402f-a588-b3e13f2bb85b)
 
 **操作演示：**
 
@@ -13,11 +13,11 @@ https://github.com/bitiful/tldraw-for-s4/assets/168170389/1aac31fb-4a67-4c40-9a8
 1. 首次访问自动分配房间，并有独立的 Url 代表房间唯一入口；
 2. 房间中内置了基于 WebSocket 的多人协作能力（本例中每个房间限2人加入）；
 3. 使用预签名方式将媒体文件上传至所有兼容 S3 协议的对象存储（本例中为 [缤纷云S4](https://www，bitiful.com/)）
-4. 利用 [缤纷云S4](https://www，bitiful.com/) 独有的 **no-wait** 技术，实现了 **0 等待** 的大文件分享特性，即：分享者上传一开始（而不用等待上传结束），接受者即可开始下载或播放分享的资料。
+4. 利用 [缤纷云S4](https://www，bitiful.com/) 独有的 **Simul-Transfer 同步传输** 技术，实现了 **即传即下** 的大文件分享特性：分享者上传一开始（而不用等待上传结束），接受者即可开始下载或播放分享的资料。
 
-## 缤纷云独有的 no-wait-transfer 特性
+## 缤纷云独有的 Simul-Transfer 同步传输技术
 
-缤纷云为大文件分享场景专门研发了 `no-wait-transfer` 特性，使用户在分享资料场景下第一次能真正完全自由地享受 `边上传边下载` 的便利。
+缤纷云为大文件分享场景专门研发了 `Simul-Transfer（同步传输）` 技术，使用户在分享资料场景下第一次能真正完全自由地享受 `即传即下` 的便利。
 
 它有几个特点：
 
@@ -26,7 +26,7 @@ https://github.com/bitiful/tldraw-for-s4/assets/168170389/1aac31fb-4a67-4c40-9a8
     - chrome、edge、Safari 等浏览器
     - curl、wget 等命令行下载工具
     - 迅雷、IDM 等高级下载工具
-3. 与实时传输不同，no-wait-transfer 超级省心，同时具备高性能和高兼容度：
+3. 与实时传输不同，Simul-Transfer 技术超级省心，同时具备高性能和高兼容度：
     - `接受者` 无需等待 `分享者` 将整个文件上传完毕，即可开始下载
     - `分享者` 也无需等待 `接受者` 就绪，无论是否有人接收，都不影响当前的全速上传
     - 全速下载，没有带宽争抢，假如：分享者正以 10MB/s 速度将一个 10GB 大小的视频上传至缤纷云S4：
