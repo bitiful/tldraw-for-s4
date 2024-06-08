@@ -1,9 +1,5 @@
 ![bitiful-tldraw-screenshop-colorful](https://github.com/bitiful/tldraw-for-s4/assets/168170389/a3b9246a-a110-402f-a588-b3e13f2bb85b)
 
-**操作演示：**
-
-https://github.com/bitiful/tldraw-for-s4/assets/168170389/1aac31fb-4a67-4c40-9a8c-e4026bc9ba6b
-
 ## 介绍
 
 本项目基于 [tldraw-sockets-example](https://github.com/tldraw/tldraw-sockets-example) 二次开发而来。
@@ -18,6 +14,10 @@ https://github.com/bitiful/tldraw-for-s4/assets/168170389/1aac31fb-4a67-4c40-9a8
 ## 缤纷云独有的 Simul-Transfer 同步传输技术
 
 缤纷云为大文件分享场景专门研发了 `Simul-Transfer（同步传输）` 技术，使用户在分享资料场景下第一次能真正完全自由地享受 `即传即下` 的便利。
+
+**「同步传输」演示：**
+
+https://github.com/bitiful/tldraw-for-s4/assets/168170389/0fa4857c-fce8-4676-9799-b8142abf918e
 
 它有几个特点：
 
